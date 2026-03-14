@@ -123,15 +123,45 @@ function generateTheoryPalette(baseHex: string, scheme: string): string[] {
   const { h, s, l } = hexToHsl(baseHex);
   switch (scheme) {
     case 'complementary':
-      return [baseHex, hslToHex((h + 180) % 360, s, l), hslToHex(h, s, Math.min(90, l + 20)), hslToHex((h + 180) % 360, s, Math.min(90, l + 20)), hslToHex(h, Math.max(10, s - 30), Math.max(10, l - 20))];
+      return [
+        baseHex,
+        hslToHex((h + 180) % 360, s, l),
+        hslToHex(h, s, Math.min(90, l + 20)),
+        hslToHex((h + 180) % 360, s, Math.min(90, l + 20)),
+        hslToHex(h, Math.max(10, s - 30), Math.max(10, l - 20)),
+      ];
     case 'analogous':
-      return [hslToHex((h - 30 + 360) % 360, s, l), hslToHex((h - 15 + 360) % 360, s, l), baseHex, hslToHex((h + 15) % 360, s, l), hslToHex((h + 30) % 360, s, l)];
+      return [
+        hslToHex((h - 30 + 360) % 360, s, l),
+        hslToHex((h - 15 + 360) % 360, s, l),
+        baseHex,
+        hslToHex((h + 15) % 360, s, l),
+        hslToHex((h + 30) % 360, s, l),
+      ];
     case 'triadic':
-      return [baseHex, hslToHex((h + 120) % 360, s, l), hslToHex((h + 240) % 360, s, l), hslToHex(h, s, Math.min(90, l + 20)), hslToHex(h, Math.max(10, s - 20), Math.max(10, l - 10))];
+      return [
+        baseHex,
+        hslToHex((h + 120) % 360, s, l),
+        hslToHex((h + 240) % 360, s, l),
+        hslToHex(h, s, Math.min(90, l + 20)),
+        hslToHex(h, Math.max(10, s - 20), Math.max(10, l - 10)),
+      ];
     case 'split-complementary':
-      return [baseHex, hslToHex((h + 150) % 360, s, l), hslToHex((h + 210) % 360, s, l), hslToHex(h, s, Math.min(90, l + 20)), hslToHex(h, Math.max(10, s - 20), Math.max(10, l - 20))];
+      return [
+        baseHex,
+        hslToHex((h + 150) % 360, s, l),
+        hslToHex((h + 210) % 360, s, l),
+        hslToHex(h, s, Math.min(90, l + 20)),
+        hslToHex(h, Math.max(10, s - 20), Math.max(10, l - 20)),
+      ];
     case 'tetradic':
-      return [baseHex, hslToHex((h + 90) % 360, s, l), hslToHex((h + 180) % 360, s, l), hslToHex((h + 270) % 360, s, l), hslToHex(h, s, Math.min(90, l + 20))];
+      return [
+        baseHex,
+        hslToHex((h + 90) % 360, s, l),
+        hslToHex((h + 180) % 360, s, l),
+        hslToHex((h + 270) % 360, s, l),
+        hslToHex(h, s, Math.min(90, l + 20)),
+      ];
     default:
       return [baseHex];
   }
@@ -259,15 +289,7 @@ function persistSaved(palettes: SavedPalette[]) {
   localStorage.setItem('colourflow-saved', JSON.stringify(palettes));
 }
 
-// ─── Vision Filter Classes ────────────────────────────────────────────────────
-
-const VISION_FILTERS: Record<string, string> = {
-  none: '',
-  protanopia: '[style*="filter:_url(#protanopia)"]',
-  deuteranopia: '',
-  tritanopia: '',
-  grayscale: 'grayscale',
-};
+// ─── Vision Filter Styles ─────────────────────────────────────────────────────
 
 const VISION_FILTER_STYLES: Record<string, React.CSSProperties> = {
   none: {},
@@ -1384,7 +1406,7 @@ export default function ColorPaletteTool() {
                 placeholder="Palette name"
                 className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#117F8D]"
               />
-              <ExportButtons onExport={handleExport} compact />
+              <ExportButtons onExport={handleExport} />
             </div>
           </div>
         </div>
@@ -1397,10 +1419,8 @@ export default function ColorPaletteTool() {
 
 function ExportButtons({
   onExport,
-  compact = false,
 }: {
   onExport: (format: string) => void;
-  compact?: boolean;
 }) {
   const buttons = [
     { format: 'copy', icon: <Copy size={14} />, label: 'Copy Hex' },
@@ -1411,7 +1431,7 @@ function ExportButtons({
   ];
 
   return (
-    <div className={`flex flex-wrap gap-2 ${compact ? '' : ''}`}>
+    <div className="flex flex-wrap gap-2">
       {buttons.map(({ format, icon, label }) => (
         <button
           key={format}
