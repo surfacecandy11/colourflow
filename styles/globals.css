@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #FAF3E0;
+  --foreground: #1A1A2E;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Vision simulation filters */
+.filter-none { filter: none; }
+.filter-protanopia { filter: url('#protanopia'); }
+.filter-deuteranopia { filter: url('#deuteranopia'); }
+.filter-tritanopia { filter: url('#tritanopia'); }
+.filter-grayscale { filter: grayscale(100%); }
